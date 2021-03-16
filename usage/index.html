@@ -103,6 +103,10 @@
               <ul class="nav flex-column">
               </ul>
             </li>
+            <li class="nav-item" data-level="2"><a href="#handshake-timeout" class="nav-link">Handshake timeout</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
             <li class="nav-item" data-level="2"><a href="#websocket-server-api" class="nav-link">WebSocket server API</a>
               <ul class="nav flex-column">
               </ul>
@@ -330,6 +334,11 @@ Wait time(ms): 10000
 <pre><code class="language-cpp">webSocket.setMaxWaitBetweenReconnectionRetries(5 * 1000); // 5000ms = 5s
 uint32_t m = webSocket.getMaxWaitBetweenReconnectionRetries();
 </code></pre>
+<h2 id="handshake-timeout">Handshake timeout</h2>
+<p>You can control how long to wait until timing out while waiting for the websocket handshake to be performed.</p>
+<pre><code>int handshakeTimeoutSecs = 1;
+setHandshakeTimeout(handshakeTimeoutSecs);
+</code></pre>
 <h2 id="websocket-server-api">WebSocket server API</h2>
 <h3 id="legacy-api">Legacy api</h3>
 <p>This api was actually changed to take a weak_ptr<WebSocket> as the first argument to setOnConnectionCallback ; previously it would take a shared_ptr<WebSocket> which was creating cycles and then memory leaks problems.</p>
@@ -397,6 +406,10 @@ if (!res.first)
     return 1;
 }
 
+// Per message deflate connection is enabled by default. It can be disabled
+// which might be helpful when running on low power devices such as a Rasbery Pi
+server.disablePerMessageDeflate();
+
 // Run the server in the background. Server can be stoped by calling server.stop()
 server.start();
 
@@ -458,6 +471,10 @@ if (!res.first)
     // Error handling
     return 1;
 }
+
+// Per message deflate connection is enabled by default. It can be disabled
+// which might be helpful when running on low power devices such as a Rasbery Pi
+server.disablePerMessageDeflate();
 
 // Run the server in the background. Server can be stoped by calling server.stop()
 server.start();
